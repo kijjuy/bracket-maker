@@ -1,24 +1,24 @@
 import React from 'react';
 import logo from './logo.svg';
-import './App.css';
+//import './App.css';
+import DoubleBracketComponent from './components/DoubleBracketComponent.tsx';
+
+//generate an array of 8 random names as strings
+const names = ['John', 'Paul', 'George', 'Ringo', 'Pete', 'Mike', 'Dave', 'John'];
+
+const bracketStartTPos = 32;
+const bracketStartLPos = 32;
+
+const bracketCurrentTPos = bracketStartTPos;
+const bracketCurrentLPos = bracketStartLPos;
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className=''>
+      <div className={`relative left-${bracketCurrentLPos} top-${bracketCurrentTPos}`}>
+        <DoubleBracketComponent name1={names[0]} name2={names[1]}/>
+        
+      </div>
     </div>
   );
 }
