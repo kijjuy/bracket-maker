@@ -41,6 +41,14 @@ function makeSingleNames(names: string[], fullBrackets : number) {
   return singleNames;
 }
 
+function makeSecondLayerBracket(numNames : number) {
+  let secondLayerBracket : JSX.Element[] = [];
+  for(let i = 0; i < numNames; i++) {
+    secondLayerBracket.push(<DoubleBracketComponent name1="" name2="" spacing={16}/>);
+  }
+  return secondLayerBracket;
+}
+
 const bracketStartTPos = 32;
 const bracketStartLPos = 32;
 
@@ -60,17 +68,25 @@ const singleNames: string[] = makeSingleNames(names, fullBrackets);
 
 function App() {
   return (
-    <div className=''>
-      <div className={`relative left-${bracketCurrentLPos} top-${bracketCurrentTPos}`}>
+    <div className='flex'>
+      <div className={`left-${bracketCurrentLPos} top-${bracketCurrentTPos} flex-shrink w-72`}>
         {namePairs.map((namePair) => (
-            <DoubleBracketComponent name1={namePair.name1} name2={namePair.name2}/>
+            <DoubleBracketComponent name1={namePair.name1} name2={namePair.name2} spacing={8}/>
         ))}
 
         {singleNames.map((name) => (
           <SingleBracketComponent name={name}/>
         ))}
-        
       </div>
+      <div className='flex-shrink w-72 bg-slate-500'>
+        <div className='mt-20'>
+          {makeSecondLayerBracket(singleNames.length)}
+        </div>
+      </div>
+      <div className='flex-shrink w-72'>
+        asd2
+      </div>
+        
     </div>
   );
 }
