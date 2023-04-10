@@ -41,13 +41,6 @@ function makeSingleNames(names: string[], fullBrackets : number) {
   return singleNames;
 }
 
-// function makeSecondLayerBracket(numNames : number, handleClick : React.MouseEventHandler<HTMLHeadingElement>) {
-//   let secondLayerBracket : JSX.Element[] = [];
-//   for(let i = 0; i < numNames; i++) {
-//     secondLayerBracket.push(<DoubleBracketComponent name1="" name2="" spacing={16} onClick={handleClick}/>);
-//   }
-//   return secondLayerBracket;
-// }
 
 
 const bracketStartTPos = 32;
@@ -58,8 +51,13 @@ const bracketCurrentLPos = bracketStartLPos;
 
 //generate a list of 15 names, names 'player1' to player15
 const names : string[] = [];
-for(let i = 1; i < 16; i++) {
+for(let i = 1; i <= 16; i++) {
   names.push(`player${i}`);
+}
+
+const names2 : string[] =[];
+for(let i = 0; i < names.length/2; i++) {
+  names2.push("");
 }
 
 
@@ -69,6 +67,7 @@ const singleNames: string[] = makeSingleNames(names, fullBrackets);
 
 function App() {
   let players = makePlayers(names);
+  let secondLayer = makeSecondLayer(names.length / 2);
   const [data, setData] = useState(0);
 
   function handleDataChange(newDataKey : number) {
@@ -76,10 +75,14 @@ function App() {
     console.log(`Click registered with data: ${names[newDataKey]}`);
   }
 
+  const [content, setContent] = useState("Click a player to start");
+  function changeContent(newContent : string) {
+    setContent(newContent);
+  }
+
   function makePlayers(names: string[]) {
     let players : JSX.Element[] = [];
     for(let i = 0; i < names.length; i+=2) {
-      
       players.push(
         <div className='w-48 m-8 bg-slate-300'>
           <Player name={names[i]} index={i} onDataChange={handleDataChange}/>
@@ -88,6 +91,19 @@ function App() {
       )
     }
     return players;
+  }
+
+  function makeSecondLayer(namesLength : number) {
+    let secondLayer : JSX.Element[] = [];
+    for(let i = 0; i < namesLength; i+=2) {
+      secondLayer.push(
+        <div className='w-48 m-8 bg-slate-300'>
+          <Player name={names2[i]} index={i} onDataChange={handleDataChange}/>
+          <Player name={names2[i+1]} index={i+1} onDataChange={handleDataChange}/>
+        </div>
+      )
+    }
+    return secondLayer;
   }
 
   return (
@@ -105,7 +121,7 @@ function App() {
       </div>
       <div className='flex-shrink w-72 bg-slate-500'>
         <div className='mt-20'>
-          {/* {makeSecondLayerBracket(singleNames.length, handlePlayerClick(index, text))} */}
+          {secondLayer}
         </div>
       </div>
       <div className='flex-shrink w-72'>
