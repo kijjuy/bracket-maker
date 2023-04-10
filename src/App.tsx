@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 //import './App.css';
 import DoubleBracketComponent from './components/DoubleBracketComponent.tsx';
 import Player from './components/Player.tsx';
@@ -41,13 +41,14 @@ function makeSingleNames(names: string[], fullBrackets : number) {
   return singleNames;
 }
 
-function makeSecondLayerBracket(numNames : number) {
-  let secondLayerBracket : JSX.Element[] = [];
-  for(let i = 0; i < numNames; i++) {
-    secondLayerBracket.push(<DoubleBracketComponent name1="" name2="" spacing={16}/>);
-  }
-  return secondLayerBracket;
-}
+// function makeSecondLayerBracket(numNames : number, handleClick : React.MouseEventHandler<HTMLHeadingElement>) {
+//   let secondLayerBracket : JSX.Element[] = [];
+//   for(let i = 0; i < numNames; i++) {
+//     secondLayerBracket.push(<DoubleBracketComponent name1="" name2="" spacing={16} onClick={handleClick}/>);
+//   }
+//   return secondLayerBracket;
+// }
+
 
 const bracketStartTPos = 32;
 const bracketStartLPos = 32;
@@ -56,7 +57,7 @@ const bracketCurrentTPos = bracketStartTPos;
 const bracketCurrentLPos = bracketStartLPos;
 
 //generate a list of 15 names, names 'player1' to player15
-const names = [];
+const names : string[] = [];
 for(let i = 1; i < 16; i++) {
   names.push(`player${i}`);
 }
@@ -67,20 +68,44 @@ const namePairs: namePair[] = makeNamePairs(names, fullBrackets);
 const singleNames: string[] = makeSingleNames(names, fullBrackets);
 
 function App() {
+  let players = makePlayers(names);
+  const [data, setData] = useState(0);
+
+  function handleDataChange(newDataKey : number) {
+    setData(newDataKey);
+    console.log(`Click registered with data: ${names[newDataKey]}`);
+  }
+
+  function makePlayers(names: string[]) {
+    let players : JSX.Element[] = [];
+    for(let i = 0; i < names.length; i+=2) {
+      
+      players.push(
+        <div className='w-48 m-8 bg-slate-300'>
+          <Player name={names[i]} index={i} onDataChange={handleDataChange}/>
+          <Player name={i+1 < names.length ? names[i+1] : ""} index={i+1} onDataChange={handleDataChange}/>
+        </div>
+      )
+    }
+    return players;
+  }
+
   return (
     <div className='flex'>
       <div className={`left-${bracketCurrentLPos} top-${bracketCurrentTPos} flex-shrink w-72`}>
-        {namePairs.map((namePair) => (
-            <DoubleBracketComponent name1={namePair.name1} name2={namePair.name2} spacing={8}/>
+        {players}
+
+        {/* {namePairs.map((namePair, index) => (
+            <DoubleBracketComponent name1={namePair.name1} name2={namePair.name2} index1={} spacing={8} onClick={handleClick}/>
         ))}
 
         {singleNames.map((name) => (
-          <SingleBracketComponent name={name}/>
-        ))}
+          <SingleBracketComponent name={name} onClick={() => handlePlayerClick(index, namePair.name1)}/>
+        ))} */}
       </div>
       <div className='flex-shrink w-72 bg-slate-500'>
         <div className='mt-20'>
-          {makeSecondLayerBracket(singleNames.length)}
+          {/* {makeSecondLayerBracket(singleNames.length, handlePlayerClick(index, text))} */}
         </div>
       </div>
       <div className='flex-shrink w-72'>
@@ -92,4 +117,3 @@ function App() {
 }
 
 export default App;
-
