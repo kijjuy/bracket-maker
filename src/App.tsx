@@ -1,47 +1,12 @@
 import React, { useState } from 'react';
 //import './App.css';
-import DoubleBracketComponent from './components/DoubleBracketComponent.tsx';
-import Player from './components/Player.tsx';
-import SingleBracketComponent from './components/SingleBracketComponent.tsx';
+import BracketSlot from './components/BracketSlot.tsx';
 
 
-class namePair {
-  constructor(name1 : string , name2: string = "") {
-      this.name1 = name1;
-      this.name2 = name2;
-  }
-
-  name1 : string;
-  name2 : string;
-}
 
 function getBaseLog(x: number, y: number) {
   return Math.log(y) / Math.log(x);
 }
-
-function makeNamePairs(names: string[], fullBrackets : number) {
-  const namePairs: namePair[] = [];
-  console.log(2**fullBrackets);
-  for(let i = 0; i < 2**fullBrackets; i+= 2) {
-    let temp = new namePair(names[i]);
-    if(i < names.length - 1) {
-      temp.name2 = names[i + 1];
-    }
-    namePairs.push(temp);
-  }
-
-  return namePairs;
-}
-
-function makeSingleNames(names: string[], fullBrackets : number) {
-  let singleNames : string[] = [];
-  for(let i = 2**fullBrackets; i < names.length; i++) {
-    singleNames.push(names[i]);
-  }
-  return singleNames;
-}
-
-
 
 const bracketStartTPos = 32;
 const bracketStartLPos = 32;
@@ -62,70 +27,38 @@ for(let i = 0; i < names.length/2; i++) {
 
 
 const fullBrackets = Math.floor(getBaseLog(2, names.length));
-const namePairs: namePair[] = makeNamePairs(names, fullBrackets);
-const singleNames: string[] = makeSingleNames(names, fullBrackets);
 
 function App() {
-  let players = makePlayers(names);
-  let secondLayer = makeSecondLayer(names.length / 2);
-  const [data, setData] = useState(0);
 
-  function handleDataChange(newDataKey : number) {
-    setData(newDataKey);
-    console.log(`Click registered with data: ${names[newDataKey]}`);
+  const [data, setData] = useState("abc");
+
+  function handleDataChange(eventItem : string) {
+    setData(eventItem);
+    console.log(`Click registered with data: ${eventItem}`);
   }
 
   const [content, setContent] = useState("Click a player to start");
+  
   function changeContent(newContent : string) {
     setContent(newContent);
   }
 
-  function makePlayers(names: string[]) {
-    let players : JSX.Element[] = [];
-    for(let i = 0; i < names.length; i+=2) {
-      players.push(
-        <div className='w-48 m-8 bg-slate-300'>
-          <Player name={names[i]} index={i} onDataChange={handleDataChange}/>
-          <Player name={i+1 < names.length ? names[i+1] : ""} index={i+1} onDataChange={handleDataChange}/>
-        </div>
-      )
-    }
-    return players;
-  }
-
-  function makeSecondLayer(namesLength : number) {
-    let secondLayer : JSX.Element[] = [];
-    for(let i = 0; i < namesLength; i+=2) {
-      secondLayer.push(
-        <div className='w-48 m-8 bg-slate-300'>
-          <Player name={names2[i]} index={i} onDataChange={handleDataChange}/>
-          <Player name={names2[i+1]} index={i+1} onDataChange={handleDataChange}/>
-        </div>
-      )
-    }
-    return secondLayer;
-  }
-
+ 
+  //final content return
   return (
-    <div className='flex'>
+    <div className='flex bg-gray-800'>
       <div className={`left-${bracketCurrentLPos} top-${bracketCurrentTPos} flex-shrink w-72`}>
-        {players}
-
-        {/* {namePairs.map((namePair, index) => (
-            <DoubleBracketComponent name1={namePair.name1} name2={namePair.name2} index1={} spacing={8} onClick={handleClick}/>
-        ))}
-
-        {singleNames.map((name) => (
-          <SingleBracketComponent name={name} onClick={() => handlePlayerClick(index, namePair.name1)}/>
-        ))} */}
-      </div>
-      <div className='flex-shrink w-72 bg-slate-500'>
-        <div className='mt-20'>
-          {secondLayer}
-        </div>
-      </div>
-      <div className='flex-shrink w-72'>
-        asd2
+        <BracketSlot name="n/a" index={0} onDataChange={handleDataChange}>
+          <BracketSlot name="n/a" index={1} onDataChange={handleDataChange} >
+            <BracketSlot name="Player1" index={3} onDataChange={handleDataChange} />
+            <BracketSlot name="Player2" index={4} onDataChange={handleDataChange} />
+          </BracketSlot>
+          <BracketSlot name="n/a" index={2} onDataChange={handleDataChange}>
+            <BracketSlot name="Player3" index={5} onDataChange={handleDataChange} />
+            <BracketSlot name="Player4" index={6} onDataChange={handleDataChange} />  
+          </BracketSlot>
+        </BracketSlot>
+        
       </div>
         
     </div>
