@@ -35,6 +35,7 @@ function App() {
   function handleDataChange(eventItem : string) {
     setData(eventItem);
     console.log(`Click registered with data: ${eventItem}`);
+    let x = <BracketSlot name="n/a" index={0} onDataChange={handleDataChange} />
   }
 
   const [content, setContent] = useState("Click a player to start");

@@ -12,7 +12,7 @@ const BracketSlot = (props: PropsName): JSX.Element => {
   const [parentName, setParentName] = useState(props.name);
 
   function handleClick() {
-    props.onDataChange(props.name);
+        props.onDataChange(props.name);
   }
 
   function handleParentUpdate(newName: string) {
@@ -24,7 +24,7 @@ const BracketSlot = (props: PropsName): JSX.Element => {
       <h2
         className="text-red-300 underline text-md m-4 border-solid border-2 rounded-lg border-sky-500 h-8 relative bg-slate-700 hover:bg-slate-400"
         onClick={handleClick}
-      >
+      >-
         {parentName}
       </h2>
       <div>
