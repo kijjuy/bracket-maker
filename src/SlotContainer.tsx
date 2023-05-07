@@ -1,17 +1,29 @@
 import BracketSlot from "./components/BracketSlot";
 class SlotContainer {
 
-    private CurrentNode : TreeNode; //root node of the tree
+    private RootNode : TreeNode; //root node of the tree
+
+    private GoLeft : Boolean = true;
 
     constructor(Data : JSX.Element) {
-        this.CurrentNode = new TreeNode(Data);
+        this.RootNode = new TreeNode(Data);
     }
 
     addNode(data : JSX.Element) : void { 
-        if(this.CurrentNode.LeftNode === undefined && this.CurrentNode.RightNode === undefined) {
-            this.CurrentNode.LeftNode = new TreeNode(data);
-            this.CurrentNode.RightNode = new TreeNode(data);
-            this.CurrentNode.Data = <BracketSlot name="n/a" index={0} onDataChange={() => {console.log(`${this.CurrentNode.Data.props.name} responded from SlotContainer`)}} />
+        
+        
+        
+    } 
+
+    private addNodeR(data : JSX.Element, curNode: TreeNode) {
+        if(this.RootNode.LeftNode === undefined && this.RootNode.RightNode === undefined) {
+            this.RootNode.LeftNode = new TreeNode(data);
+            this.RootNode.RightNode = this.RootNode;
+            this.RootNode.Data = <BracketSlot name="n/a" index={0} onDataChange={() => {console.log(`${this.RootNode.Data.props.name} responded from SlotContainer`)}} />
+            this.GoLeft = !this.GoLeft;
+            return;
+        } else if (this.GoLeft === true) {
+            this.addNodeR(data, curNode.LeftNode);
         }
     }
 }
@@ -21,7 +33,6 @@ class SlotContainer {
 class TreeNode {
 
     public Data : JSX.Element;
-    public ParentNode : TreeNode | null = null;
     public LeftNode : TreeNode | null = null;
     public RightNode : TreeNode | null = null;
 
